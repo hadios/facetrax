@@ -1,15 +1,11 @@
+require('dotenv').load();
 var easyimg = require('easyimage');
 var request = require('request');
 var needle  = require('needle');
 
-var apiKeys = require('../api');
-
 var imageIndex  = 1;
-var imageLocals = ['babysanta1.jpg',
-                   'family.jpg'];
-
-// GLOBAL VARIABLES
-var CROPURL = "https://api.idolondemand.com/1/api/sync/detectfaces/v1";
+var imageLocals = ['photo/babysanta1.jpg',
+                   'photo/family.jpg'];
 
 var cropImage = function (cropDetails, imageSource, imageDestination, cb) {
     easyimg.crop(
@@ -26,7 +22,7 @@ var cropImage = function (cropDetails, imageSource, imageDestination, cb) {
         }
     );
 
-    console.log('Cropped');
+    console.log(imageSource + ' -> ' + imageDestination);
     return cb(null);
 }
 
@@ -40,7 +36,7 @@ var cropThisImage = function (source, cb) {
     }
 
     var data = {
-        'apikey': apiKeys.HP_API_KEY,
+        'apikey': process.env.HPINDEMAND_API_KEY,
         'file': {
             'file': source,
             'content_type': 'multipart/form-data'
@@ -48,7 +44,7 @@ var cropThisImage = function (source, cb) {
         'additional': true,
     };
 
-    needle.post(CROPURL,
+    needle.post(process.env.HP_DETECTFACE_URL,
                 data,
                 { multipart: true },
                 function (error, response, body) {
@@ -60,7 +56,7 @@ var cropThisImage = function (source, cb) {
 
                 switch (response.statusCode) {
                     case 200:
-                        console.log(body);
+                        //console.log(body);
 
                         var faces       = body.face;
                         var numFaces    = faces.length;
@@ -69,7 +65,7 @@ var cropThisImage = function (source, cb) {
                             console.log("C'mon put a face in there!");
                             return false;
                         } else {
-                            console.log("Extracting " + numFaces + "!");
+                            console.log("Found " + numFaces + " faces!");
                         }
 
                         // Extract all the faces from the photo
@@ -80,13 +76,14 @@ var cropThisImage = function (source, cb) {
                                     return false;
                                 }
 
-                                console.log("Image cropped!");
+                                //console.log("Image cropped!");
                             });
                         }
                         break;
 
                     default:
-                        console.log("Error in face detection. " + body);
+                        console.log("Error in face detection. ");
+                        console.log(body);
                         break;
                 }
             }
