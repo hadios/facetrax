@@ -17,9 +17,14 @@ a {
   	height: 20em;
   	border-radius: 0.7em;
 }
-
+.sponsor{
+ 	background-color: #eee;
+  	margin-top: 2em;
+  	padding-bottom: 2em;
+  	padding-top: 0.5em;
+  	text-align: -webkit-center;
+}
 .footer{
-	margin-top: 2em;
 	background-color: #444;
   	color: #fff;
   	padding: 1em 0 0.5em 1em;
