@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", function() {
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
 		context.drawImage(video, 0, 0, 640, 480);
-		
+
 		video.pause();
 		// video.src="";
 		localMediaStream.stop();
@@ -48,7 +48,18 @@ window.addEventListener("DOMContentLoaded", function() {
 			url: '/imageUpload',
 			type: 'POST',
 			data: postData,
-			contentType: 'application/json'
+			contentType: 'application/json',
+			success: function(data) {
+				console.log(data);
+
+				if (data.result) {
+					//console.log("Refreshing!");
+					//window.location.href = "/";
+				} else {
+					//console.log("Refreshing!");
+					//window.location.href = "/";
+				}
+			}
 		});
 
   });
