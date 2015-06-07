@@ -31,8 +31,13 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Facetrax' });
 });
 
-var _returnDefault = function(res){
-    return res.json({statusCode: 200, result: false});
+// /* GET home page. */
+// router.get('/result', function(req, res, next) {
+//   res.render('result', { title: 'Facetrax' });
+// });
+
+var _returnDefault = function(res, result){
+    return res.json({statusCode: 200, result: result});
 
     // return res.format({
     //         html: function() {
@@ -88,7 +93,7 @@ router.post('/imageUpload', function(req, res, next) {
     if (!imageData) {
         console.log("There is no image, yo!");
 
-        return _returnDefault(res);
+        return _returnDefault(res, false);
     }
 
     console.log("Image received!");
@@ -97,7 +102,7 @@ router.post('/imageUpload', function(req, res, next) {
     _savefileToServer(imageData, destinationFile, function(err, imageFilepath) {
         if (err) {
             console.log("Error saving file!");
-            return _returnDefault(res);
+            return _returnDefault(res, false);
         }
 
         console.log("Save file succesfully");
@@ -110,7 +115,7 @@ router.post('/imageUpload', function(req, res, next) {
             if (!generatedFiles) {
                 console.log("Unable to extract faces!");
                 fs.unlinkSync(imageFilepath);
-                return _returnDefault(res);
+                return _returnDefault(res, false);
             }
 
             console.log("Extraction succesfully! " + generatedFiles);
@@ -123,7 +128,7 @@ router.post('/imageUpload', function(req, res, next) {
                     }
 
                     fs.unlinkSync(imageFilepath);
-                    return _returnDefault(res);
+                    return _returnDefault(res, false);
                 }
 
                 var imageList = [];
@@ -185,7 +190,7 @@ router.post('/imageUpload', function(req, res, next) {
                     fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
-                    return _returnDefault(res);
+                    return _returnDefault(res, true);
                 });
             });
         });
