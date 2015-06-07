@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "body-parser": "~1.12.4",
+    "canvas": "^1.2.3",
     "cookie-parser": "~1.3.5",
     "cps-api": "0.0.8",
     "debug": "~2.2.0",
@@ -16,6 +17,8 @@
     "jquery": "^2.1.4",
     "morgan": "~1.5.3",
     "nodemon": "^1.3.7",
+    "node-resemble": "^1.1.3",
+    "resemble": "^1.2.1",
     "serve-favicon": "~2.2.1",
     "sparkpost": "^1.0.0"
   }
