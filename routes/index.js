@@ -174,7 +174,7 @@ router.post('/imageUpload', function(req, res, next) {
                     for (var i = 0; i < generatedFiles.length; i++) {
                         fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
                     }
-                    //fs.unlinkSync(imageFilepath);
+                    fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
                     return _returnDefault(res);
