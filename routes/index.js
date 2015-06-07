@@ -4,6 +4,7 @@ var path      = require('path');
 var cps       = require('cps-api');
 var resemble  = require('node-resemble');
 var async     = require('async');
+var SparkPost = require('sparkpost');
 
 var imageProcess = require('../scripts/imageProcess')
 
@@ -26,6 +27,69 @@ var _savefileToServer = function (imagedata, destPath, cb) {
     });
 }
 
+var _sendEmail = function (cb) {
+    var client = new SparkPost(process.env.SPARKPOST_API);
+
+    var trans = {
+      options: {
+        open_tracking: true,
+        click_tracking: true
+      },
+      campaign_id: "christmas_campaign",
+      return_path: "facetrax@chooyansheng.me",
+      metadata: {
+        user_type: "students"
+      },
+      substitution_data: {
+        sender: "Big Store Team"
+      },
+      recipients: [
+        {
+          return_path: "facetrax@chooyansheng.me",
+          address: {
+            email: "cys009@gmail.com",
+            name: "Ai Meili"
+          },
+          tags: [
+            "greeting",
+            "prehistoric",
+            "fred",
+            "flintstone"
+          ],
+          metadata: {
+            place: "Bedrock"
+          },
+          substitution_data: {
+            customer_type: "Platinum"
+          }
+        }
+      ],
+      content: {
+        from: {
+          name: "Facetrax",
+          email: "facetrax@chooyansheng.me"
+        },
+        subject: "Big Christmas savings!",
+        reply_to: "Christmas Sales <facetrax@chooyansheng.me>",
+        headers: {
+          "X-Customer-Campaign-ID": "christmas_campaign"
+        },
+        text: "Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n Hurry, this offer is only to {{user_type}}\n {{sender}}",
+        html: "<p>Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n</p><p>Hurry, this offer is only to {{user_type}}\n</p><p>{{sender}}</p>"
+      }
+    };
+
+    client.transmissions.send({transmissionBody: trans}, function(err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(res.body);
+        console.log("Congrats you can use our SDK!");
+      }
+      cb();
+    });
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Facetrax' });
@@ -33,9 +97,15 @@ router.get('/', function(req, res, next) {
 
 /* GET home page. */
 router.get('/result', function(req, res, next) {
+    var imageId = req.query.image;
 
+    console.log(req.query);
+    console.log(req.body);
 
-  res.render('success', { title: 'Facetrax' });
+    _sendEmail(function(){
+        res.render('success', { title: 'Facetrax',
+                                imageName: imageId });
+    })
 });
 
 var _returnDefault = function(res, result, userids){
@@ -189,10 +259,10 @@ router.post('/imageUpload', function(req, res, next) {
                 }, function done() {
                     // Remove the source and generated photos
 
-                    for (var i = 0; i < generatedFiles.length; i++) {
-                        fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
-                    }
-                    fs.unlinkSync(imageFilepath);
+                    // for (var i = 0; i < generatedFiles.length; i++) {
+                    //     fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
+                    // }
+                    // fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
 
@@ -202,14 +272,16 @@ router.post('/imageUpload', function(req, res, next) {
                             userIds.push(succesfulRegister[i].id);
                         }
 
-                        return _returnDefault(res, true, userIds);
+                        return _returnDefault(res, true, succesfulRegister[0].imagePath);
                     } else {
-                        return _returnDefault(res, false);
+                        console.log(generatedFiles);
+                        var chosenImage = generatedFiles[0];
+
+                        var spliceIndex = chosenImage.lastIndexOf('/') + 1;
+                        var outputFile  = "img/" + chosenImage.slice(spliceIndex, chosenImage.length);
+
+                        return _returnDefault(res, true, outputFile);
                     }
-
-                    // Get the user id
-
-
                 });
             });
         });

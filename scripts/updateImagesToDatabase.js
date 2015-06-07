@@ -37,7 +37,8 @@ var _addToDatabase = function(filelist, cb) {
         var data = {
             'id': (i+1),
             'username': 'name'+(i+1),
-            'imagePath': filelist[i]
+            'imagePath': filelist[i],
+            'email': process.env.FREE_EMAIL
         };
 
         documents.push(data);
