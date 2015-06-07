@@ -16,7 +16,7 @@ var client = new SparkPost(process.env.SPARKPOST_API);
 
 var cps = require('./node_modules/cps-api');
 var conn = new cps.Connection('tcp://cloud-us-0.clusterpoint.com:9007', 'facetrax', process.env.DB_USERNAME, process.env.DB_PASSWORD, 'document', 'document/id', {account: 100322});
-conn.debug = true;
+// conn.debug = true;
 // Get a list of domains that the Metrics API contains data on.
 // var options = {
 //   uri: 'metrics/domains'
