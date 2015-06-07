@@ -78,6 +78,12 @@ a {
   font-size: 10px;
 }
 
+.video #success button{
+  font-size: 20px;
+
+}
+
+
 .nav-bar{
   background-color: #ff0066;
 }
@@ -121,5 +127,30 @@ a {
 .button-align{
   margin-left: auto;
   margin-right: auto;
-  width: 8em;
+  width: 10em;
+}
+
+.button-align-2{
+  margin-left: auto;
+  margin-right: auto;
+  width: 30em;
+  background-color: #ff0066;
+color: #fff;
+display: block;
+width: 6em;
+height: 6em;
+border: 2px solid #f5f5f5;
+border-radius: 50%;
+text-align: center;
+text-decoration: none;
+font-size: 70px;
+font-weight: bold;
+margin-left: auto;
+margin-right: auto;
+text-align: center;
+margin-top: 1em;
+}
+
+.icon-size{
+    font-size: 35px;
 }

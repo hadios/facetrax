@@ -31,10 +31,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Facetrax' });
 });
 
-// /* GET home page. */
-// router.get('/result', function(req, res, next) {
-//   res.render('result', { title: 'Facetrax' });
-// });
+/* GET home page. */
+router.get('/result', function(req, res, next) {
+  res.render('success', { title: 'Facetrax' });
+});
 
 var _returnDefault = function(res, result){
     return res.json({statusCode: 200, result: result});
