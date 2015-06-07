@@ -101,7 +101,7 @@ router.post('/imageUpload', function(req, res, next) {
         console.log("Save file succesfully");
 
         // HARDCODED!
-        imageFilepath = path.join(__dirname, '../photo/rowan.png');
+        imageFilepath = path.join(__dirname, '../photo/family.jpg');
 
         // Start running the image detection and extraction
         imageProcess.extractGenerateFaceImages(imageFilepath, function(generatedFiles){
@@ -169,6 +169,14 @@ router.post('/imageUpload', function(req, res, next) {
                     });
 
                 }, function done() {
+                    // Remove the source and generated photos
+                    var filesToDelete = generatedFiles;
+                    filesToDelete.push(imageFilepath);
+
+                    for (var i = 0; i < filesToDelete.length; i++) {
+                        fs.unlinkSync(filesToDelete[i]);
+                    }
+
                     console.log(succesfulRegister);
                     return _returnDefault(res);
                 });
