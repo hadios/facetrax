@@ -9,7 +9,6 @@ a {
 }
 
 .top-content{
-	padding: 50px;
 }
 
 .content{
@@ -24,7 +23,7 @@ a {
   	text-align: -webkit-center;
 }
 .footer{
-	background-color: #444;
+	  background-color: #ff0066;
   	color: #fff;
   	padding: 1em 0 0.5em 1em;
     text-align: -webkit-center;
@@ -40,10 +39,40 @@ a {
   color: #fff;
 }
 
+.btn-pink button:hover{
+  background-color: #3374C2;
+}
+
+.nav-bar{
+  background-color: #ff0066;
+}
+
 .nav-bar hr{
   margin-top: 21px;
   margin-bottom: 0px;
   border: 0;
-  border-top: 5px solid #ff0066;
+  border-top: 5px solid #ffffff;
   width: 100%;
+}
+
+.title h2{
+  max-width:15em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #000000;
+  padding: 0.4em;
+}
+
+.title{
+  text-align: -webkit-center;
+  width: 100%;
+  color: #ffffff;
+  padding: 0.1em 0 0 0;
+  margin-top: 1em;
+}
+
+.subTitle{
+  text-align: -webkit-center;
+  color: #777;
+  margin-bottom: 2em;
 }

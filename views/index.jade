@@ -6,7 +6,8 @@ block content
         $(document).on("click","#snap",function() {
             $('#canvas').css('display', 'initial');
         });
-        $('#canvas').css('display', 'none');
+        document.getElementById('#canvas').style.display = "none";
+        //$('#canvas').css('display', 'none');
     });
 
   .top-content
@@ -15,6 +16,12 @@ block content
   .nav-bar
     hr
 
+  .title
+    h2 SO PUMPED FOR MY EVENT
+      
+  .subTitle
+    h2 But First Let Me Take A Selfie
+      
   div.video(class="row")
     video#video(class="col-md-12 col-xs-12", autoplay)
     canvas#canvas(class="col-md-12 col-xs-12")
