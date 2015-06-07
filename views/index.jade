@@ -1,19 +1,31 @@
 extends layout
 
 block content
-  .top-content
-    img(src='img/logo.png')/
-    p Welcome to #{title}
+	script(type='text/javascript').
+		$(document).ready(function() {
+		    $(document).on("click","#uploadphoto",function() {
+		        $('.loginbox').css('display', 'initial');
+		    });
+		    $('.loginbox').css('display', 'none');
+		});
 
+	.loginbox
+		form(name="login", action="/login", method="post")
+			input(type="text", name="user")
+			input(type="submit", value="upload")
 
-  a.btn.btn-default Upload Photo
+	.top-content
+		img(src='img/logo.png')/
+		p Welcome to #{title} 
 
-  .powered
-    h3 Powered By
-    img(src='img/linode.png')/
-    img(src='img/clusterpoint.png')/
-    img(src='img/sparkpost.png')/
-    img(src='img/hp.png')/
+		pbutton#uploadphoto.btn.btn-default Upload Photo
 
-  .footer
-    p © 2015 FaceTrak. All Rights Reserved.
+		.powered
+			h3 Powered By
+			img(src='img/linode.png')/
+			img(src='img/clusterpoint.png')/
+			img(src='img/sparkpost.png')/
+			img(src='img/hp.png')/
+
+		.footer
+			p © 2015 FaceTrak. All Rights Reserved.
