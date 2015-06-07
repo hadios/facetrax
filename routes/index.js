@@ -107,6 +107,8 @@ router.post('/imageUpload', function(req, res, next) {
 
         console.log("Save file succesfully");
 
+        console.log(imageFilepath);
+
         // HARDCODED!
         //imageFilepath = path.join(__dirname, '../photo/rowan.png');
 
