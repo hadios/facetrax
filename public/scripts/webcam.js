@@ -1,7 +1,5 @@
 // Put event listeners into place
 
-var context;
-
 window.addEventListener("DOMContentLoaded", function() {
 	// Grab elements, create settings, etc.
 	var canvas = document.getElementById("canvas"),
@@ -34,6 +32,18 @@ window.addEventListener("DOMContentLoaded", function() {
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
   	context.drawImage(video, 0, 0, 640, 480);
+		var imgData = canvas.toDataURL("img/png");
+		imgData = imgData.replace('data:image/png;base64,','');
+		var postData = JSON.stringify({imageData: imgData});
+		console.log(postData);
+
+		$.ajax({
+			url: '',
+			type: 'POST',
+			data: postData,
+			contentType: 'application/json'
+		});
+
   });
 
 }, false);

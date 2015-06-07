@@ -5,13 +5,14 @@ block content
     img(src='img/logo.png')/
     p Welcome to #{title}
 
-
   a.btn.btn-default Upload Photo
+  button#snap(class="btn btn-success") Snap Photo
   
-  div.video
-    video#video(width="800", height="600", autoplay)
-    canvas#canvas(width="640", height="480")
-    button#snap(class="btn btn-success") Snap Photo
+  div.video(class="container")
+    div.col-md-4
+      video#video(width="640", height="640", autoplay)
+    div.col-md-4
+      canvas#canvas(class="" width="640", height="480")
   
   .powered
     h3 Powered By
