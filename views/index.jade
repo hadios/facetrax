@@ -1,17 +1,24 @@
 extends layout
 
 block content
+  script(type='text/javascript').
+    $(document).ready(function() {
+        $(document).on("click","#snap",function() {
+            $('#canvas').css('display', 'initial');
+        });
+        $('#canvas').css('display', 'none');
+    });
+
   .top-content
-    img(src='img/logo.png')/
-    p Welcome to #{title}
-
-
-  a.btn.btn-default Upload Photo
+    img(src='img/logo.png',class="col-md-3 col-sm-6 col-xs-12")/
   
-  div.video
-    video#video(width="800", height="600", autoplay)
-    canvas#canvas(width="640", height="480")
-    button#snap(class="btn btn-success") Snap Photo
+  .nav-bar
+    hr
+
+  div.video(class="row")
+    video#video(class="col-md-12 col-xs-12", autoplay)
+    canvas#canvas(class="col-md-12 col-xs-12")
+    button#snap(class="btn btn-pink col-md-3 col-sm-12 col-xs-12") Snap Photo
   
   .powered
     h3 Powered By
