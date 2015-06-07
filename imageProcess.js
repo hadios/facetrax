@@ -22,23 +22,20 @@ var cropImage = function (cropDetails, imageSource, imageDestination, cb) {
         }
     );
 
-    console.log(imageSource + ' -> ' + imageDestination);
+    //console.log(imageSource + ' -> ' + imageDestination);
     return cb(null);
 }
 
-var cropThisImage = function (source, cb) {
-    console.log("Preparing to crop image...");
-
-    // Read in the source image
-    if (!source) {
-        console.log("No image found!");
-        return null;
+var getFaceDetection = function(image, cb) {
+    if (!image) {
+        console.log("Hey there is no image!");
+        return cb("No image!", null);
     }
 
     var data = {
         'apikey': process.env.HPINDEMAND_API_KEY,
         'file': {
-            'file': source,
+            'file': image,
             'content_type': 'multipart/form-data'
         },
         'additional': true,
@@ -47,58 +44,81 @@ var cropThisImage = function (source, cb) {
     needle.post(process.env.HP_DETECTFACE_URL,
                 data,
                 { multipart: true },
-                function (error, response, body) {
+            function (error, response, body) {
+                console.log(body);
 
                 if (error) {
                     console.log("Error: " + error);
-                    return;
+                    return cb(err, null);
                 }
 
                 switch (response.statusCode) {
                     case 200:
-                        //console.log(body);
-
-                        var faces       = body.face;
-                        var numFaces    = faces.length;
-
-                        if (numFaces == 0) {
-                            console.log("C'mon put a face in there!");
-                            return false;
-                        } else {
-                            console.log("Found " + numFaces + " faces!");
-                        }
-
-                        // Extract all the faces from the photo
-                        for (var i = 0; i < faces.length; i++) {
-                            cropImage(faces[i], source, "photo/" + (i+1) + "_" + source, function(err){
-                                if (err) {
-                                    console.log("[ERROR]: Failed cropping...");
-                                    return false;
-                                }
-
-                                //console.log("Image cropped!");
-                            });
-                        }
-                        break;
+                        return cb(null, body.face);
 
                     default:
-                        console.log("Error in face detection. ");
-                        console.log(body);
-                        break;
+                        var message = "Error in consulting face detection API" + response.statusCode;
+                        console.log(message);
+                        return cb(message, null);
                 }
             }
     );
 
-    return false;
+    return null;
+}
+
+var cropThisImage = function (source, cb) {
+    console.log("Preparing to crop image...");
+
+    // Read in the source image
+    if (!source) {
+        console.log("No image found!");
+        return cb(false);
+    }
+
+    getFaceDetection(source, function(err, facesDetails) {
+        var numFaces = facesDetails.length;
+        if (numFaces == 0) {
+            console.log("C'mon put a face in there!");
+            return cb(null);
+        } else {
+            console.log("Found " + numFaces + " faces!");
+        }
+
+        // Create output path and file name
+        var outputPath = "photo/";
+
+        // Remove directory path
+        var spliceIndex = source.lastIndexOf('/') + 1;
+        var outputFile  = source.slice(spliceIndex, source.length);
+
+        var generatedFiles = [];
+
+        // Extract all the faces from the photo
+        for (var i = 0; i < facesDetails.length; i++) {
+            var destPath = outputPath + (i+1) + "_" + outputFile;
+
+            cropImage(facesDetails[i], source, destPath, function(err) {
+                if (err) {
+                    console.log("[ERROR]: Failed cropping...");
+                    return cb(null);
+                }
+
+                //console.log("Image cropped!");
+                generatedFiles.push(destPath);
+            });
+        }
+        return cb(generatedFiles);
+    });
 }
 
 var source = imageLocals[imageIndex];
-
-cropThisImage(source, function(croppedImage) {
-    if (!croppedImage) {
+cropThisImage(source, function(result) {
+    if (!result) {
         console.log("Nothing to return");
         return;
     }
 
     console.log("Succesfully crop image!");
+    console.log("Result: " + result);
 });
