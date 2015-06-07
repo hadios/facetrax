@@ -31,19 +31,20 @@ window.addEventListener("DOMContentLoaded", function() {
 
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
-  	context.drawImage(video, 0, 0, 640, 480);
+  	context.drawImage(video, 0, 0, 128, 128);
 		var imgData = canvas.toDataURL("img/png");
 		imgData = imgData.replace('data:image/png;base64,','');
 		var postData = JSON.stringify({imageData: imgData});
 		console.log(postData);
 
 		$.ajax({
-			url: '',
+			url: '/imageUpload',
 			type: 'POST',
 			data: postData,
 			contentType: 'application/json'
 		});
 
   });
+
 
 }, false);
