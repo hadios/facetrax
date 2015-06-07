@@ -39,32 +39,32 @@ var _sendEmail = function (imageLink, cb) {
         open_tracking: true,
         click_tracking: true
       },
-      campaign_id: "christmas_campaign",
+      campaign_id: "Facetrax Registration",
       return_path: "facetrax@chooyansheng.me",
       metadata: {
-        user_type: "students"
+        user_type: "users"
       },
       substitution_data: {
-        sender: "Big Store Team"
+        sender: "Registered Users"
       },
       recipients: [
         {
           return_path: "facetrax@chooyansheng.me",
           address: {
             email: "cys009@gmail.com",
-            name: "Ai Meili"
+            name: "Alex"
           },
           tags: [
-            "greeting",
-            "prehistoric",
-            "fred",
-            "flintstone"
+            "Hackaton",
+            "Startup",
+            "Hackers",
+            "AngelHack"
           ],
           metadata: {
-            place: "Bedrock"
+            place: "HUGE""
           },
           substitution_data: {
-            customer_type: "Platinum"
+            customer_type: "registered users"
           }
         }
       ],
@@ -73,13 +73,12 @@ var _sendEmail = function (imageLink, cb) {
           name: "Facetrax",
           email: "facetrax@chooyansheng.me"
         },
-        subject: "Big Christmas savings!",
-        reply_to: "Christmas Sales <facetrax@chooyansheng.me>",
+        subject: "Registration Success!",
+        reply_to: "Facetrax Registration <facetrax@chooyansheng.me>",
         headers: {
-          "X-Customer-Campaign-ID": "christmas_campaign"
+          "X-Customer-Campaign-ID": "Facetrax Registration "
         },
-        text: "Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n Hurry, this offer is only to {{user_type}}\n {{sender}}",
-        html: "<p>Hi {{address.name}}" + "<img src=" + imageEmailLink + "/>\nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n</p><p>Hurry, this offer is only to {{user_type}}\n</p><p>{{sender}}</p>"
+        text: "Hi Alex \nThank You for registering with Facetrax \n
       }
     };
 
