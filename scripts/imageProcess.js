@@ -53,7 +53,7 @@ var getFaceDetection = function(image, cb) {
                     console.log(body);
 
                     if (err) {
-                        console.log("Error: " + error);
+                        console.log("Error: " + err);
                         return cb(err, null);
                     }
 
