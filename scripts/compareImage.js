@@ -2,8 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var resemble = require('node-resemble');
 
-var file1 = path.join(__dirname, "../photo/testImage.jpg");
-var file2 = path.join(__dirname, "../photo/testImage.jpg");
+var file1 = path.join(__dirname, "../photo/rowan.png");
+var file2 = path.join(__dirname, "../photo/1433673601791_tempfile.jpg");
 
 var api = resemble(file1).onComplete(function(data){
 console.log(data);
