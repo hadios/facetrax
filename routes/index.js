@@ -32,15 +32,17 @@ router.get('/', function(req, res, next) {
 });
 
 var _returnDefault = function(res){
-    return res.format({
-            html: function() {
-                res.render('index', { title: 'Express'});
-            },
+    return res.json({statusCode: 200, result: false});
 
-            json: function() {
-                res.status(200).send('OK');
-            }
-        });
+    // return res.format({
+    //         html: function() {
+    //             res.render('index', { title: 'Express'});
+    //         },
+    //
+    //         json: function() {
+    //             res.status(200).send('OK');
+    //         }
+    //     });
 }
 
 var _getAllDocuments = function (cb) {
