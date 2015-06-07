@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		context = canvas.getContext("2d"),
 		video = document.getElementById("video"),
 		videoObj = { "video": true },
+		localMediaStream = null,
 		errBack = function(error) {
 			console.log("Video capture error: ", error.code);
 		};
@@ -15,11 +16,13 @@ window.addEventListener("DOMContentLoaded", function() {
 		navigator.getUserMedia(videoObj, function(stream) {
 			video.src = stream;
 			video.play();
+			localMediaStream = stream;
 		}, errBack);
 	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
 		navigator.webkitGetUserMedia(videoObj, function(stream){
 			video.src = window.webkitURL.createObjectURL(stream);
 			video.play();
+			localMediaStream = stream;
 		}, errBack);
 	}
 	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
@@ -31,11 +34,14 @@ window.addEventListener("DOMContentLoaded", function() {
 
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
-  	context.drawImage(video, 0, 0, 128, 128);
-		var imgData = canvas.toDataURL("img/png");
+		// context.drawImage(video, 0, 0, 128, 128);
+		video.pause();
+		// video.src="";
+		localMediaStream.stop();
+		var imgData = video.toDataURL("img/png");
 		imgData = imgData.replace('data:image/png;base64,','');
 		var postData = JSON.stringify({imageData: imgData});
-		console.log(postData);
+		// console.log(postData);
 
 		$.ajax({
 			url: '/imageUpload',

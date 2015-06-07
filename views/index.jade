@@ -1,20 +1,37 @@
 extends layout
 
 block content
-  .top-content
-    img(src='img/logo.png')/
-    p Welcome to #{title}
+  script(type='text/javascript').
+    $(document).ready(function() {
+        $(document).on("click","#snap",function() {
+            $('#canvas').css('display', 'initial');
+        });
+        //- document.getElementById('#canvas').style.display = "none";
+        //$('#canvas').css('display', 'none');
+    });
 
-  a.btn.btn-default Upload Photo
-  button#snap(class="btn btn-success") Snap Photo
+  .top-content
   
-  div.video(class="container")
-    div.col-md-4
-      video#video(width="640", height="640", autoplay)
-    div.col-md-4
-      canvas#canvas(class="" width="640", height="480")
   
-  .powered
+  .nav-bar
+    img(src='img/logo.png',class="col-md-3 col-sm-6 col-xs-12")/
+    hr
+
+  .title
+    h2 SO PUMPED FOR MY EVENT!
+      
+  .subTitle
+    h2 But First Let Me Take A Selfie
+      
+  div.video(class="row")
+
+    video#video(class="col-md-6 col-md-offset-3 col-xs-12", autoplay)
+  
+  .button-align(class="row")
+    button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12") Snap <br> Photo
+    canvas#canvas(class="row col-md-6 col-md-offset-3 col-xs-12", hidden)
+  
+  .powered(class="row")
     h3 Powered By
     img(src='img/linode.png')/
     img(src='img/clusterpoint.png')/

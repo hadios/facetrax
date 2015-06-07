@@ -1,7 +1,7 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #f6f6f6;
+  height: 40em;
 }
 
 a {
@@ -9,7 +9,6 @@ a {
 }
 
 .top-content{
-	
 }
 
 .content{
@@ -21,11 +20,106 @@ a {
  	background-color: #eee;
   	margin-top: 2em;
   	padding-bottom: 2em;
-  	padding-top: 0.5em;
   	text-align: -webkit-center;
 }
 .footer{
-	background-color: #444;
+	  background-color: #ff0066;
   	color: #fff;
   	padding: 1em 0 0.5em 1em;
+    text-align: -webkit-center;
+}
+
+.powered h3{
+  padding-top:1em;
+  padding-bottom:0.5em;
+}
+
+.btn-pink{
+  background-color: #3374C2;
+  background-color: #ff0066;
+  color: #fff;
+  display: block;
+  width: 6em;
+  height: 6em;
+  border: 2px solid #f5f5f5;
+  border-radius: 50%;
+  color: #f5f5f5;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 3px gray;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: 1em;
+}
+
+.btn-pink button:hover{
+  background-color: #ff0066;
+  color: #fff;
+  display: block;
+  width: 6em;
+  height: 6em;
+  border: 2px solid #f5f5f5;
+  border-radius: 50%;
+  color: #f5f5f5;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 3px gray;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.video #snap button{
+  font-size: 10px;
+}
+
+.nav-bar{
+  background-color: #ff0066;
+}
+
+.nav-bar hr{
+  margin-top: 21px;
+  margin-bottom: 0px;
+  border: 0;
+  border-top: 5px solid #ffffff;
+  width: 100%;
+}
+
+.title h2{
+  max-width:15em;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #000000;
+  padding: 0.4em;
+}
+
+.video #video{
+  border: solid;
+  border-width: thick;
+  padding: 0;
+}
+
+.title{
+  text-align: -webkit-center;
+  width: 100%;
+  color: #ffffff;
+  padding: 0.1em 0 0 0;
+  margin-top: 1em;
+}
+
+.subTitle{
+  text-align: -webkit-center;
+  color: #777;
+  margin-bottom: 2em;
+}
+
+.button-align{
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
 }
