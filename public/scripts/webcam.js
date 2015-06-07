@@ -51,6 +51,7 @@ window.addEventListener("DOMContentLoaded", function() {
 			contentType: 'application/json',
 			success: function(data) {
 				console.log(data);
+				$( "#loading" ).show();
 
 				if (data.result) {
 					console.log("Refreshing!");

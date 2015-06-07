@@ -27,8 +27,12 @@ var _savefileToServer = function (imagedata, destPath, cb) {
     });
 }
 
-var _sendEmail = function (cb) {
+var _sendEmail = function (imageLink, cb) {
+    console.log(process.env.SPARKPOST_API);
     var client = new SparkPost(process.env.SPARKPOST_API);
+
+    var imageEmailLink = process.env.SERVERURL + imageLink;
+    console.log(imageEmailLink);
 
     var trans = {
       options: {
@@ -75,7 +79,7 @@ var _sendEmail = function (cb) {
           "X-Customer-Campaign-ID": "christmas_campaign"
         },
         text: "Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n Hurry, this offer is only to {{user_type}}\n {{sender}}",
-        html: "<p>Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n</p><p>Hurry, this offer is only to {{user_type}}\n</p><p>{{sender}}</p>"
+        html: "<p>Hi {{address.name}}" + "<img src=" + imageEmailLink + "/>\nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n</p><p>Hurry, this offer is only to {{user_type}}\n</p><p>{{sender}}</p>"
       }
     };
 
@@ -102,7 +106,7 @@ router.get('/result', function(req, res, next) {
     console.log(req.query);
     console.log(req.body);
 
-    _sendEmail(function(){
+    _sendEmail(imageId, function(){
         res.render('success', { title: 'Facetrax',
                                 imageName: imageId });
     })
@@ -262,7 +266,7 @@ router.post('/imageUpload', function(req, res, next) {
                     // for (var i = 0; i < generatedFiles.length; i++) {
                     //     fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
                     // }
-                    // fs.unlinkSync(imageFilepath);
+                    fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
 
@@ -274,7 +278,7 @@ router.post('/imageUpload', function(req, res, next) {
 
                         return _returnDefault(res, true, succesfulRegister[0].imagePath);
                     } else {
-                        console.log(generatedFiles);
+                        //console.log(generatedFiles);
                         var chosenImage = generatedFiles[0];
 
                         var spliceIndex = chosenImage.lastIndexOf('/') + 1;
