@@ -6,7 +6,7 @@ block content
         $(document).on("click","#snap",function() {
             $('#canvas').css('display', 'initial');
         });
-        document.getElementById('#canvas').style.display = "none";
+        //- document.getElementById('#canvas').style.display = "none";
         //$('#canvas').css('display', 'none');
     });
 
@@ -24,11 +24,12 @@ block content
     h2 But First Let Me Take A Selfie
       
   div.video(class="row")
+
     video#video(class="col-md-6 col-md-offset-3 col-xs-12", autoplay)
   
   .button-align(class="row")
     button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12") Snap <br> Photo
-    canvas#canvas(class="row col-md-6 col-md-offset-3 col-xs-12")
+    canvas#canvas(class="row col-md-6 col-md-offset-3 col-xs-12", hidden)
   
   .powered(class="row")
     h3 Powered By
