@@ -14,6 +14,98 @@ var app = express();
 var SparkPost = require('sparkpost');
 var client = new SparkPost(process.env.SPARKPOST_API);
 
+var cps = require('./node_modules/cps-api');
+var conn = new cps.Connection('tcp://cloud-us-0.clusterpoint.com:9007', 'facetrax', process.env.DB_USERNAME, process.env.DB_PASSWORD, 'document', 'document/id', {account: 100322});
+// conn.debug = true;
+// Get a list of domains that the Metrics API contains data on.
+// var options = {
+//   uri: 'metrics/domains'
+// };
+
+// var id = 3,
+//    name = "Username";
+// var insert_request = new cps.InsertRequest('<document><id>'+id+'</id>'+cps.Term(name, "name")+'</document>');
+// conn.sendRequest(insert_request, function(err, insert_response) {
+//    if (err) return console.error(err);
+//    console.log('New user registered: ' + insert_response.document.id);
+// });
+
+var trans = {
+  options: {
+    open_tracking: true,
+    click_tracking: true
+  },
+  campaign_id: "christmas_campaign",
+  return_path: "facetrax@chooyansheng.me",
+  metadata: {
+    user_type: "students"
+  },
+  substitution_data: {
+    sender: "Big Store Team"
+  },
+  recipients: [
+    {
+      return_path: "facetrax@chooyansheng.me",
+      address: {
+        email: "cys009@gmail.com",
+        name: "Ai Meili"
+      },
+      tags: [
+        "greeting",
+        "prehistoric",
+        "fred",
+        "flintstone"
+      ],
+      metadata: {
+        place: "Bedrock"
+      },
+      substitution_data: {
+        customer_type: "Platinum"
+      }
+    }
+  ],
+  content: {
+    from: {
+      name: "Facetrax",
+      email: "facetrax@chooyansheng.me"
+    },
+    subject: "Big Christmas savings!",
+    reply_to: "Christmas Sales <facetrax@chooyansheng.me>",
+    headers: {
+      "X-Customer-Campaign-ID": "christmas_campaign"
+    },
+    text: "Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n Hurry, this offer is only to {{user_type}}\n {{sender}}",
+    html: "<p>Hi {{address.name}} \nSave big this Christmas in your area {{place}}! \nClick http://www.mysite.com and get huge discount\n</p><p>Hurry, this offer is only to {{user_type}}\n</p><p>{{sender}}</p>"
+  }
+};
+
+// client.transmissions.send({transmissionBody: trans}, function(err, res) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(res.body);
+//     console.log("Congrats you can use our SDK!");
+//   }
+// });
+
+// client.sendingDomains.all(function(err, res) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(res.body);
+//     console.log('Congrats you can use our SDK!');
+//   }
+// });
+//
+// client.get(options, function(err, data) {
+//   if(err) {
+//     console.log(err);
+//     return;
+//   }
+//
+//   console.log(data.body);
+// });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

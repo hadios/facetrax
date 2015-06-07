@@ -1,31 +1,26 @@
 extends layout
 
 block content
-	script(type='text/javascript').
-		$(document).ready(function() {
-		    $(document).on("click","#uploadphoto",function() {
-		        $('.loginbox').css('display', 'initial');
-		    });
-		    $('.loginbox').css('display', 'none');
-		});
+  .top-content
+    img(src='img/logo.png')/
+    p Welcome to #{title}
 
-	.loginbox
-		form(name="login", action="/login", method="post")
-			input(type="text", name="user")
-			input(type="submit", value="upload")
 
-	.top-content
-		img(src='img/logo.png')/
-		p Welcome to #{title} 
+  a.btn.btn-default Upload Photo
+  
+  div.video
+    video#video(width="800", height="600", autoplay)
+    canvas#canvas(width="640", height="480")
+    button#snap(class="btn btn-success") Snap Photo
+  
+  .powered
+    h3 Powered By
+    img(src='img/linode.png')/
+    img(src='img/clusterpoint.png')/
+    img(src='img/sparkpost.png')/
+    img(src='img/hp.png')/
 
-		pbutton#uploadphoto.btn.btn-default Upload Photo
+  .footer
+    p © 2015 FaceTrak. All Rights Reserved.
 
-		.powered
-			h3 Powered By
-			img(src='img/linode.png')/
-			img(src='img/clusterpoint.png')/
-			img(src='img/sparkpost.png')/
-			img(src='img/hp.png')/
-
-		.footer
-			p © 2015 FaceTrak. All Rights Reserved.
+    script(src='scripts/webcam.js')
