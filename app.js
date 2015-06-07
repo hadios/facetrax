@@ -5,7 +5,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var twitterAPI = require('node-twitter-api');
 
+var twitter = new twitterAPI({
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    oauth_callback: 'http://localhost:3000/twitter-callback'
+});
+
+// console.log(twitter);
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -29,6 +37,57 @@ var conn = new cps.Connection('tcp://cloud-us-0.clusterpoint.com:9007', 'facetra
 //    if (err) return console.error(err);
 //    console.log('New user registered: ' + insert_response.document.id);
 // });
+
+// twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
+//     if (error) {
+//         console.log("Error getting OAuth request token : " + error);
+//         console.log(results);
+//     } else {
+//         //store token and tokenSecret somewhere, you'll need them later; redirect user
+//         console.log(requestToken + ", " + requestTokenSecret);
+//     }
+// });
+
+// twitter.statuses("update", {
+//         status: "Hello world!"
+//     },
+//     process.env.TWITTER_ACCESS_TOKEN,
+//     process.env.TWITTER_ACCESS_TOKEN_SECRET,
+//     function(error, data, response) {
+//         if (error) {
+//             // something went wrong
+//         } else {
+//             // data contains the data sent by twitter
+//         }
+//     }
+// );
+
+// twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
+//     if (error) {
+//         console.log(error);
+//     } else {
+//         //store token and tokenSecret somewhere, you'll need them later; redirect user
+// 		console.log("https://twitter.com/oauth/authenticate?oauth_token=" + requestToken);
+// 		console.log(requestToken);
+// 		console.log(requestTokenSecret);
+//     }
+// });
+
+// twitter.getTimeline("user", {
+//   screen_name:"grandnexus"
+//     },
+//     process.env.TWITTER_ACCESS_TOKEN,
+//     process.env.TWITTER_ACCESS_TOKEN_SECRET,
+//     function(error, data, response) {
+//         if (error) {
+//             // something went wrong
+//             console.log(error);
+//         } else {
+//             // data contains the data sent by twitter
+//             console.log(data[0].user.profile_image_url);
+//         }
+//     }
+// );
 
 var trans = {
   options: {
@@ -113,8 +172,8 @@ app.set('view engine', 'jade');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
