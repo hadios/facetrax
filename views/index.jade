@@ -6,7 +6,7 @@ block content
         $(document).on("click","#snap",function() {
             $('#canvas').css('display', 'initial');
         });
-        document.getElementById('#canvas').style.display = "none";
+        //- document.getElementById('#canvas').style.display = "none";
         //$('#canvas').css('display', 'none');
     });
 
@@ -24,7 +24,7 @@ block content
       
   div.video(class="row")
     video#video(class="col-md-12 col-xs-12", autoplay)
-    canvas#canvas(class="col-md-12 col-xs-12")
+    canvas#canvas(class="col-md-12 col-xs-12" hidden)
     button#snap(class="btn btn-pink col-md-3 col-sm-12 col-xs-12") Snap Photo
   
   .powered
