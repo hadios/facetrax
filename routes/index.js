@@ -79,7 +79,7 @@ var _sendEmail = function (imageLink, cb) {
           "X-Customer-Campaign-ID": "Facetrax Registration "
         },
         text: "Hi Alex \nThank You for registering with Facetrax \n",
-        html: "<img src=" + imageEmailLink + "/> Hi Alex \nThank You for registering with Facetrax \n"
+        html: "<img src='" + imageEmailLink + "'/> Hi Alex \nThank You for registering with Facetrax \n"
       }
     };
 
