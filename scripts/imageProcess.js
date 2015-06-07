@@ -1,4 +1,4 @@
-require('dotenv').load();
+require('dotenv').config({path: '../.env'});
 var easyimg = require('easyimage');
 var request = require('request');
 var needle  = require('needle');
@@ -67,7 +67,7 @@ var getFaceDetection = function(image, cb) {
     return null;
 }
 
-var extractGenerateFaceImages = function (source, cb) {
+module.exports.extractGenerateFaceImages = function (source, cb) {
     console.log("Preparing to crop image...");
 
     // Read in the source image
