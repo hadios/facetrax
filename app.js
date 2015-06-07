@@ -69,29 +69,29 @@ function base64_encode(file) {
     return new Buffer(bitmap).toString('base64');
 }
 
-twitter.uploadMedia({
-    media: base64_encode("photo/family.jpg"),
-    isBase64: true
-}, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
-    console.log(data.media_id);
-    twitter.statuses("update", {
-        status: "Test",
-        media_ids: data.media_id_string
-    }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
-        // console.log(err);
-        console.log(data);
-        // console.log(res);
-        // setTimeout(function() {
-        //     twitter.statuses("destroy", {
-        //         id: data.id
-        //     }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
-        //         console.log(err);
-        //         console.log(data);
-        //         console.log(res);
-        //     });
-        // }, 10000);
-    });
-});
+// twitter.uploadMedia({
+//     media: base64_encode("photo/family.jpg"),
+//     isBase64: true
+// }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//     console.log(data.media_id);
+//     twitter.statuses("update", {
+//         status: "Test",
+//         media_ids: data.media_id_string
+//     }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//         // console.log(err);
+//         console.log(data);
+//         // console.log(res);
+//         // setTimeout(function() {
+//         //     twitter.statuses("destroy", {
+//         //         id: data.id
+//         //     }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//         //         console.log(err);
+//         //         console.log(data);
+//         //         console.log(res);
+//         //     });
+//         // }, 10000);
+//     });
+// });
 
 
 
