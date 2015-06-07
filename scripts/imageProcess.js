@@ -98,7 +98,7 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
 
         // Remove directory path
         var spliceIndex = source.lastIndexOf('/') + 1;
-        var outputFile  = source.slice(spliceIndex, source.length);
+        var outputFile  = Date.now() + "_" + source.slice(spliceIndex, source.length);
 
         var generatedFiles = [];
 

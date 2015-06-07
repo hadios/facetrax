@@ -11,7 +11,7 @@ var router = express.Router();
 
 var _savefileToServer = function (imagedata, destPath, cb) {
     var buf = new Buffer(imagedata, 'base64');
-    var filepath = destPath+'tempfile.jpg';
+    var filepath = destPath+ Date.now() + '_tempfile.jpg';
 
     // Temporary save the file
     fs.writeFile(filepath, buf, 'binary', function(err) {
@@ -101,7 +101,7 @@ router.post('/imageUpload', function(req, res, next) {
         console.log("Save file succesfully");
 
         // HARDCODED!
-        imageFilepath = path.join(__dirname, '../photo/family.jpg');
+        //imageFilepath = path.join(__dirname, '../photo/rowan.png');
 
         // Start running the image detection and extraction
         imageProcess.extractGenerateFaceImages(imageFilepath, function(generatedFiles){
@@ -170,12 +170,11 @@ router.post('/imageUpload', function(req, res, next) {
 
                 }, function done() {
                     // Remove the source and generated photos
-                    var filesToDelete = generatedFiles;
-                    filesToDelete.push(imageFilepath);
 
-                    for (var i = 0; i < filesToDelete.length; i++) {
-                        fs.unlinkSync(filesToDelete[i]);
+                    for (var i = 0; i < generatedFiles.length; i++) {
+                        fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
                     }
+                    //fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
                     return _returnDefault(res);
