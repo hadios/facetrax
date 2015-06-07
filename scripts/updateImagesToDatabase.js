@@ -5,7 +5,7 @@ var cps          = require('cps-api');
 var conn         = new cps.Connection(process.env.CLUSTERPOINT_URL, 'facetrax', process.env.DB_USERNAME, process.env.DB_PASSWORD, 'document', 'document/id', {account: 100322});
 
 var PHOTO_DIRECTORY = "../photo";
-var CLEAR_FLAG = false;
+var CLEAR_FLAG = true;
 
 var _getAllFilesFromFolder = function(dir) {
     var results = [];
@@ -91,6 +91,36 @@ _sampleInsert = function() {
         console.log('New user registered: ' + insert_response.document.id);
     });
 }
+
+_getAllDocuments = function () {
+    var data = {
+        "query": "*"
+    }
+
+    var search_req = new cps.SearchRequest(data);
+    //var search_req = new cps.SearchRequest("<query> * </query> <docs>20</docs> <offset>0</offset> <list> <document>yes</document> </list>");
+    conn.sendRequest(search_req, function (err, search_resp) {
+        if (err) {
+            return console.log(err);
+        }
+
+        console.log(search_resp.results);
+        var databaseImages = search_resp.results.document;
+
+        if (!databaseImages) {
+            return;
+        }
+
+        // Loop through all the results
+        for (var i = 0; i < databaseImages.length; i++) {
+            console.log(databaseImages[i].imagePath);
+        }
+    });
+}
+
+//_sampleInsert();
+//_getAllDocuments();
+//return;
 
 if (CLEAR_FLAG) {
     conn.sendRequest(new cps.Request('clear'), function (err, clear_resp) {

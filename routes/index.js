@@ -1,14 +1,20 @@
-var express = require('express');
-var fs      = require('fs');
-var path    = require('path');
+var express   = require('express');
+var fs        = require('fs');
+var path      = require('path');
+var cps       = require('cps-api');
+var resemble  = require('node-resemble');
+var async     = require('async');
+
+var imageProcess = require('../scripts/imageProcess')
 
 var router = express.Router();
 
 var _savefileToServer = function (imagedata, destPath, cb) {
     var buf = new Buffer(imagedata, 'base64');
+    var filepath = destPath+'tempfile.jpg';
 
     // Temporary save the file
-    fs.writeFile(destPath+'tempfile.jpg', buf, 'binary', function(err) {
+    fs.writeFile(filepath, buf, 'binary', function(err) {
         if (err) {
             console.log("Error saving file to server!");
             console.log(err);
@@ -16,7 +22,7 @@ var _savefileToServer = function (imagedata, destPath, cb) {
         }
 
         console.log('File saved.');
-        return cb(null, destPath);
+        return cb(null, filepath);
     });
 }
 
@@ -25,70 +31,150 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Facetrax' });
 });
 
+var _returnDefault = function(res){
+    return res.format({
+            html: function() {
+                res.render('index', { title: 'Express'});
+            },
+
+            json: function() {
+                res.status(200).send('OK');
+            }
+        });
+}
+
+var _getAllDocuments = function (cb) {
+    var conn = new cps.Connection(process.env.CLUSTERPOINT_URL,
+                                'facetrax',
+                                process.env.DB_USERNAME,
+                                process.env.DB_PASSWORD,
+                                'document',
+                                'document/id',
+                                {account: 100322});
+
+    var data = {
+        "query": "*"
+    }
+
+    var search_req = new cps.SearchRequest(data);
+    conn.sendRequest(search_req, function (err, search_resp) {
+        if (err) {
+            console.log(err);
+            return cb(err, null);
+        }
+
+        //console.log(search_resp.results);
+        var databaseImages = search_resp.results.document;
+
+        if (!databaseImages) {
+            return cb("Something wrong", null);
+        }
+
+        // Loop through all the results
+        // for (var i = 0; i < databaseImages.length; i++) {
+        //     console.log(databaseImages[i].imagePath);
+        // }
+
+        return cb(null, databaseImages);
+    });
+}
+
 router.post('/imageUpload', function(req, res, next) {
     //console.log(req.body);
 
-    // Check if there is image
     var imageData = req.body.imageData;
     if (!imageData) {
         console.log("There is no image, yo!");
 
-        return res.format({
-                html: function() {
-                    res.render('index', { title: 'Express'});
-                },
-
-                json: function() {
-                    res.status(200).send('OK');
-                }
-            });
+        return _returnDefault(res);
     }
 
     console.log("Image received!");
 
     var destinationFile = path.join(__dirname, '../photo/');
-    return _savefileToServer(imageData, destinationFile, function(err, imageFilepath) {
+    _savefileToServer(imageData, destinationFile, function(err, imageFilepath) {
         if (err) {
             console.log("Error saving file!");
-            return res.format({
-                    html: function() {
-                        res.render('index', { title: 'Express'});
-                    },
-
-                    json: function() {
-                        res.status(200).send('OK');
-                    }
-                });
+            return _returnDefault(res);
         }
 
         console.log("Save file succesfully");
 
-        return res.format({
-                html: function() {
-                    res.render('index', { title: 'Express'});
-                },
+        // HARDCODED!
+        imageFilepath = path.join(__dirname, '../photo/rowan.png');
 
-                json: function() {
-                    res.status(200).send('OK');
+        // Start running the image detection and extraction
+        imageProcess.extractGenerateFaceImages(imageFilepath, function(generatedFiles){
+            if (!generatedFiles) {
+                console.log("Unable to extract faces!");
+                return _returnDefault(res);
+            }
+
+            console.log("Extraction succesfully! " + generatedFiles);
+
+            // Get list of all documents
+            _getAllDocuments(function(err, documentList){
+                if (err) {
+                    return _returnDefault(res);
                 }
+
+                var imageList = [];
+                var succesfulRegister = [];
+
+                var comparisonList = [];
+                for (var i = 0; i < documentList.length; i++) {
+                    //imageList.push(documentList[i].imagePath);
+                    var file1 = documentList[i];
+
+                    for (var j = 0; j < generatedFiles.length; j++) {
+                        var file2 = generatedFiles[j];
+
+                        var compare = {};
+                        compare.file1 = file1;
+                        compare.file2 = file2;
+
+                        comparisonList.push(compare);
+
+                        //console.log("%s : %s", file1.imagePath, file2);
+                    }
+                }
+
+                //console.log("Comparison list: " + comparisonList);
+
+                async.eachSeries(comparisonList, function iterator(item, callback) {
+
+                    async.setImmediate(function () {
+                        var filepath1 = path.join(__dirname, item.file1.imagePath);
+                        var filepath2 = path.join(__dirname, item.file2);
+
+                        console.log("%s : %s", filepath1, filepath2);
+
+                        resemble(filepath1).compareTo(filepath2).ignoreColors().onComplete(function(data){
+                            console.log(data);
+
+                            if (parseFloat(data.misMatchPercentage) < 25.0) {
+                                succesfulRegister.push(item.file1);
+                            }
+
+                            /*
+                            {
+                              misMatchPercentage : 100, // %
+                              isSameDimensions: true, // or false
+                              dimensionDifference: { width: 0, height: -1 }, // defined if dimensions are not the same
+                              getImageDataUrl: function(){}
+                            }
+                            */
+                        });
+                        callback(null, item);
+                    });
+
+                }, function done() {
+                    console.log(succesfulRegister);
+                    return _returnDefault(res);
+                });
             });
+        });
     });
-    // var tempImage = ''; // Save here
-    //
-    // // Start running the image detection and extraction
-    // imageProcess.extractGenerateFaceImages(tempImage, function(result){
-    //     if (!result) {
-    //
-    //     }
-    // });
-
-    // Save the image
-
-    // Process the image
-
-    // Check if there is any faces
-
-    //res.render('index', { title: 'Facetrax' });
 });
 
 module.exports = router;

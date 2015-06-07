@@ -1,7 +1,8 @@
-require('dotenv').config({path: '../.env'});
+//require('dotenv').config({path: '../.env'});
 var easyimg = require('easyimage');
 var request = require('request');
 var needle  = require('needle');
+var path    = require('path');
 
 var imageIndex  = 1;
 var imageLocals = ['photo/babysanta1.jpg',
@@ -32,6 +33,9 @@ var getFaceDetection = function(image, cb) {
         return cb("No image!", null);
     }
 
+    console.log("Face detection time!");
+    console.log(image);
+
     var data = {
         'apikey': process.env.HPINDEMAND_API_KEY,
         'file': {
@@ -41,28 +45,32 @@ var getFaceDetection = function(image, cb) {
         'additional': true,
     };
 
-    needle.post(process.env.HP_DETECTFACE_URL,
-                data,
-                { multipart: true },
-            function (error, response, body) {
-                console.log(body);
+    try {
+        needle.post(process.env.HP_DETECTFACE_URL,
+                    data,
+                    { multipart: true },
+                function (err, response, body) {
+                    console.log(body);
 
-                if (error) {
-                    console.log("Error: " + error);
-                    return cb(err, null);
+                    if (err) {
+                        console.log("Error: " + error);
+                        return cb(err, null);
+                    }
+
+                    switch (response.statusCode) {
+                        case 200:
+                            return cb(null, body.face);
+
+                        default:
+                            var message = "Error in consulting face detection API" + response.statusCode;
+                            console.log(message);
+                            return cb(message, null);
+                    }
                 }
-
-                switch (response.statusCode) {
-                    case 200:
-                        return cb(null, body.face);
-
-                    default:
-                        var message = "Error in consulting face detection API" + response.statusCode;
-                        console.log(message);
-                        return cb(message, null);
-                }
-            }
-    );
+        );
+    } catch(err) {
+        console.log(err);
+    }
 
     return null;
 }
@@ -86,7 +94,7 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
         }
 
         // Create output path and file name
-        var outputPath = "photo/";
+        var outputPath = path.join(__dirname, "../photo/");
 
         // Remove directory path
         var spliceIndex = source.lastIndexOf('/') + 1;
@@ -96,7 +104,8 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
 
         // Extract all the faces from the photo
         for (var i = 0; i < facesDetails.length; i++) {
-            var destPath = outputPath + (i+1) + "_" + outputFile;
+            var destPath = path.join(outputPath, (i+1) + "_" + outputFile);
+            var relativePath = path.join("../photo/", (i+1) + "_" + outputFile);
 
             cropImage(facesDetails[i], source, destPath, function(err) {
                 if (err) {
@@ -105,20 +114,20 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
                 }
 
                 //console.log("Image cropped!");
-                generatedFiles.push(destPath);
+                generatedFiles.push(relativePath);
             });
         }
         return cb(generatedFiles);
     });
 }
 
-var source = imageLocals[imageIndex];
-extractGenerateFaceImages(source, function(result) {
-    if (!result) {
-        console.log("Nothing to return");
-        return;
-    }
-
-    console.log("Succesfully crop image!");
-    console.log("Result: " + result);
-});
+// var source = imageLocals[imageIndex];
+// extractGenerateFaceImages(source, function(result) {
+//     if (!result) {
+//         console.log("Nothing to return");
+//         return;
+//     }
+//
+//     console.log("Succesfully crop image!");
+//     console.log("Result: " + result);
+// });
