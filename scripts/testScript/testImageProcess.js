@@ -3,8 +3,8 @@ var easyimg = require('easyimage');
 var request = require('request');
 var needle  = require('needle');
 
-var imageIndex  = 2;
-var imageLocals = ['../../photo/babysanta1.jpg',
+var imageIndex  = 0;
+var imageLocals = ['../../photo/baseTest.jpg',
                    '../../photo/rowan.png',
                    '../../photo/testImage.jpg'];
 

@@ -56,7 +56,7 @@ window.addEventListener("DOMContentLoaded", function() {
 					console.log("Refreshing!");
 
 					// Add in userid for his own page
-					window.location.href = "/result?"+data.userids;
+					window.location.href = "/result?image="+data.userids;
 				} else {
 					console.log("Refreshing!");
 					//window.location.href = "/";

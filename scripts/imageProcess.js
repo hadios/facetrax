@@ -96,18 +96,18 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
         }
 
         // Create output path and file name
-        var outputPath = path.join(__dirname, "../photo/");
+        var outputPath = path.join(__dirname, "../public/img/");
 
         // Remove directory path
         var spliceIndex = source.lastIndexOf('/') + 1;
-        var outputFile  = Date.now() + "_" + source.slice(spliceIndex, source.length);
+        var outputFile  = source.slice(spliceIndex, source.length);
 
         var generatedFiles = [];
 
         // Extract all the faces from the photo
         for (var i = 0; i < facesDetails.length; i++) {
             var destPath = path.join(outputPath, (i+1) + "_" + outputFile);
-            var relativePath = path.join("../photo/", (i+1) + "_" + outputFile);
+            var relativePath = path.join("../public/img/", (i+1) + "_" + outputFile);
 
             cropImage(facesDetails[i], source, destPath, function(err) {
                 if (err) {
