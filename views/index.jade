@@ -18,23 +18,20 @@ block content
 
   .title
     h2 SO PUMPED FOR MY EVENT!
-      
+
   .subTitle
     h2 But First Let Me Take A Selfie
-      
+
   div.video(class="row")
 
     video#video(class="col-md-6 col-md-offset-3 col-xs-12", autoplay)
-  
+
   .button-align(class="row")
-
-    button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12")
-      .icon-size
-        i(class="fa fa-camera")
-
-    button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12") Snap <br> Photo
     canvas#canvas(class="row", width="640",height="480", hidden)
-  
+    button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12")
+     .icon-size
+       i(class="fa fa-camera")
+
   .powered(class="row")
     h3 Powered By
     img(src='img/linode.png')/
