@@ -107,6 +107,7 @@ router.post('/imageUpload', function(req, res, next) {
         imageProcess.extractGenerateFaceImages(imageFilepath, function(generatedFiles){
             if (!generatedFiles) {
                 console.log("Unable to extract faces!");
+                fs.unlinkSync(imageFilepath);
                 return _returnDefault(res);
             }
 
@@ -115,6 +116,11 @@ router.post('/imageUpload', function(req, res, next) {
             // Get list of all documents
             _getAllDocuments(function(err, documentList){
                 if (err) {
+                    for (var i = 0; i < generatedFiles.length; i++) {
+                        fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
+                    }
+
+                    fs.unlinkSync(imageFilepath);
                     return _returnDefault(res);
                 }
 

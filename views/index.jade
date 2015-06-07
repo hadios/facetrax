@@ -27,12 +27,14 @@ block content
     video#video(class="col-md-6 col-md-offset-3 col-xs-12", autoplay)
   
   .button-align(class="row")
+
     button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12")
       .icon-size
         i(class="fa fa-camera")
 
-    canvas#canvas(class="row col-md-6 col-md-offset-3 col-xs-12", hidden)
-    
+    button#snap(class="row btn btn-pink col-md-offset-1 col-md-3 col-sm-12 col-xs-12") Snap <br> Photo
+    canvas#canvas(class="row", width="640",height="480", hidden)
+  
   .powered(class="row")
     h3 Powered By
     img(src='img/linode.png')/
