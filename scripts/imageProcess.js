@@ -45,6 +45,8 @@ var getFaceDetection = function(image, cb) {
         'additional': true,
     };
 
+    console.log(data);
+
     try {
         needle.post(process.env.HP_DETECTFACE_URL,
                     data,
