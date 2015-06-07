@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  script(type='text/javascript').
+    $(document).ready(function() {
+        $(document).on("click","#snap",function() {
+            $('#canvas').css('display', 'initial');
+        });
+        //- document.getElementById('#canvas').style.display = "none";
+        //$('#canvas').css('display', 'none');
+    });
+
+  .top-content
+
+
+  .nav-bar
+    img(src='img/logo.png',class="col-md-3 col-sm-6 col-xs-12")/
+    hr
+
+  .hackit(class="row")
+    img(src='img/hackit.gif',class="col-md-4 col-md-offset-4 col-sm-12 col-xs-12")/
+
+  .title
+    h2 TIME TO HACK & ROLL BABY
+
+  .powered(class="row")
+    h3 Powered By
+    img(src='img/linode.png')/
+    img(src='img/clusterpoint.png')/
+    img(src='img/sparkpost.png')/
+    img(src='img/hp.png')/
+
+  .footer
+    p © 2015 FaceTrak. All Rights Reserved.
+
+    script(src='scripts/webcam.js')
