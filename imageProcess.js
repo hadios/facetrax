@@ -70,7 +70,7 @@ var cropThisImage = function (source, cb) {
 
                         // Extract all the faces from the photo
                         for (var i = 0; i < faces.length; i++) {
-                            cropImage(faces[i], source, (i+1) + "_" + source, function(err){
+                            cropImage(faces[i], source, "photo/" + (i+1) + "_" + source, function(err){
                                 if (err) {
                                     console.log("[ERROR]: Failed cropping...");
                                     return false;
