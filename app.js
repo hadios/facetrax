@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var twitterAPI = require('node-twitter-api');
-
+var fs = require('fs');
 var twitter = new twitterAPI({
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
@@ -61,6 +61,39 @@ conn.debug = true;
 //         }
 //     }
 // );
+
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
+
+// twitter.uploadMedia({
+//     media: base64_encode("photo/family.jpg"),
+//     isBase64: true
+// }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//     console.log(data.media_id);
+//     twitter.statuses("update", {
+//         status: "Test",
+//         media_ids: data.media_id_string
+//     }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//         // console.log(err);
+//         console.log(data);
+//         // console.log(res);
+//         // setTimeout(function() {
+//         //     twitter.statuses("destroy", {
+//         //         id: data.id
+//         //     }, process.env.TWITTER_ACCESS_TOKEN, process.env.TWITTER_ACCESS_TOKEN_SECRET, function(err, data, res) {
+//         //         console.log(err);
+//         //         console.log(data);
+//         //         console.log(res);
+//         //     });
+//         // }, 10000);
+//     });
+// });
+
+
 
 // twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results){
 //     if (error) {
