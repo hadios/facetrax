@@ -33,11 +33,14 @@ router.get('/', function(req, res, next) {
 
 /* GET home page. */
 router.get('/result', function(req, res, next) {
+
+
   res.render('success', { title: 'Facetrax' });
 });
 
-var _returnDefault = function(res, result){
-    return res.json({statusCode: 200, result: result});
+var _returnDefault = function(res, result, userids){
+    console.log("Userid: " + userids);
+    return res.json({statusCode: 200, result: result, userids: userids});
 
     // return res.format({
     //         html: function() {
@@ -192,7 +195,21 @@ router.post('/imageUpload', function(req, res, next) {
                     fs.unlinkSync(imageFilepath);
 
                     console.log(succesfulRegister);
-                    return _returnDefault(res, true);
+
+                    if (succesfulRegister.length > 0) {
+                        var userIds = [];
+                        for (var i = 0; i < succesfulRegister.length; i++) {
+                            userIds.push(succesfulRegister[i].id);
+                        }
+
+                        return _returnDefault(res, true, userIds);
+                    } else {
+                        return _returnDefault(res, false);
+                    }
+
+                    // Get the user id
+
+
                 });
             });
         });
