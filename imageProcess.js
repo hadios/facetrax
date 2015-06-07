@@ -67,7 +67,7 @@ var getFaceDetection = function(image, cb) {
     return null;
 }
 
-var cropThisImage = function (source, cb) {
+var extractGenerateFaceImages = function (source, cb) {
     console.log("Preparing to crop image...");
 
     // Read in the source image
@@ -113,7 +113,7 @@ var cropThisImage = function (source, cb) {
 }
 
 var source = imageLocals[imageIndex];
-cropThisImage(source, function(result) {
+extractGenerateFaceImages(source, function(result) {
     if (!result) {
         console.log("Nothing to return");
         return;
