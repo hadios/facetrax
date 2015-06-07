@@ -34,7 +34,7 @@ var getFaceDetection = function(image, cb) {
     }
 
     console.log("Face detection time!");
-    console.log(image);
+    //console.log(image);
 
     var data = {
         'apikey': process.env.HPINDEMAND_API_KEY,
@@ -45,7 +45,7 @@ var getFaceDetection = function(image, cb) {
         'additional': true,
     };
 
-    console.log(data);
+    //console.log(data);
 
     try {
         needle.post(process.env.HP_DETECTFACE_URL,
@@ -87,6 +87,10 @@ module.exports.extractGenerateFaceImages = function (source, cb) {
     }
 
     getFaceDetection(source, function(err, facesDetails) {
+        if (!facesDetails) {
+            return cb(null);
+        }
+
         var numFaces = facesDetails.length;
         if (numFaces == 0) {
             console.log("C'mon put a face in there!");

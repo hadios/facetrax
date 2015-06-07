@@ -3,9 +3,9 @@ var easyimg = require('easyimage');
 var request = require('request');
 var needle  = require('needle');
 
-var imageIndex  = 0;
-var imageLocals = ['../../photo/baseTest.jpg',
-                   '../../photo/rowan.png',
+var imageIndex  = 1;
+var imageLocals = ['../../photo/emilie.jpg',
+                   '../../photo/jason.jpg',
                    '../../photo/testImage.jpg'];
 
 var cropImage = function (cropDetails, imageSource, imageDestination, cb) {

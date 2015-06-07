@@ -61,7 +61,7 @@ var _sendEmail = function (imageLink, cb) {
             "AngelHack"
           ],
           metadata: {
-            place: "HUGE""
+            place: "HUGE"
           },
           substitution_data: {
             customer_type: "registered users"
@@ -78,7 +78,8 @@ var _sendEmail = function (imageLink, cb) {
         headers: {
           "X-Customer-Campaign-ID": "Facetrax Registration "
         },
-        text: "Hi Alex \nThank You for registering with Facetrax \n
+        text: "Hi Alex \nThank You for registering with Facetrax \n",
+        html: "<img src=" + imageEmailLink + "/> Hi Alex \nThank You for registering with Facetrax \n"
       }
     };
 
@@ -127,6 +128,7 @@ var _returnDefault = function(res, result, userids){
 }
 
 var _getAllDocuments = function (cb) {
+    console.log("Getting documents!");
     var conn = new cps.Connection(process.env.CLUSTERPOINT_URL,
                                 'facetrax',
                                 process.env.DB_USERNAME,
@@ -145,6 +147,8 @@ var _getAllDocuments = function (cb) {
             console.log(err);
             return cb(err, null);
         }
+
+        console.log("Received request!");
 
         //console.log(search_resp.results);
         var databaseImages = search_resp.results.document;
@@ -206,8 +210,12 @@ router.post('/imageUpload', function(req, res, next) {
                     }
 
                     fs.unlinkSync(imageFilepath);
+                    console.log("Unable to get documents!");
+
                     return _returnDefault(res, false);
                 }
+
+                console.log("Found documents!");
 
                 var imageList = [];
                 var succesfulRegister = [];
@@ -230,7 +238,7 @@ router.post('/imageUpload', function(req, res, next) {
                     }
                 }
 
-                //console.log("Comparison list: " + comparisonList);
+                console.log("Comparison list: " + comparisonList);
 
                 async.eachSeries(comparisonList, function iterator(item, callback) {
 
