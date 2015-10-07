@@ -22,6 +22,9 @@ var _savefileToServer = function (imagedata, destPath, cb) {
             return cb(err, null);
         }
 
+        // // TESTING OVERWRITE
+        // filepath = destPath + "babysanta1.jpg";
+
         console.log('File saved.');
         return cb(null, filepath);
     });
@@ -51,7 +54,7 @@ var _sendEmail = function (imageLink, cb) {
         {
           return_path: "facetrax@chooyansheng.me",
           address: {
-            email: "cys009@gmail.com",
+            email: "damienhadios@gmail.com",
             name: "Alex"
           },
           tags: [
@@ -106,10 +109,10 @@ router.get('/result', function(req, res, next) {
     console.log(req.query);
     console.log(req.body);
 
-    _sendEmail(imageId, function(){
+    //_sendEmail(imageId, function(){
         res.render('success', { title: 'Facetrax',
                                 imageName: imageId });
-    })
+    //});
 });
 
 var _returnDefault = function(res, result, userids){
@@ -196,7 +199,7 @@ router.post('/imageUpload', function(req, res, next) {
         imageProcess.extractGenerateFaceImages(imageFilepath, function(generatedFiles){
             if (!generatedFiles) {
                 console.log("Unable to extract faces!");
-                fs.unlinkSync(imageFilepath);
+                //fs.unlinkSync(imageFilepath);
                 return _returnDefault(res, false);
             }
 
@@ -205,14 +208,21 @@ router.post('/imageUpload', function(req, res, next) {
             // Get list of all documents
             _getAllDocuments(function(err, documentList){
                 if (err) {
-                    for (var i = 0; i < generatedFiles.length; i++) {
-                        fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
-                    }
+                    // for (var i = 0; i < generatedFiles.length; i++) {
+                    //     fs.unlinkSync(path.join(__dirname, generatedFiles[i]));
+                    // }
 
-                    fs.unlinkSync(imageFilepath);
+                    //fs.unlinkSync(imageFilepath);
                     console.log("Unable to get documents!");
 
-                    return _returnDefault(res, false);
+                    var chosenImage = generatedFiles[0];
+
+                    var spliceIndex = chosenImage.lastIndexOf('/') + 1;
+                    var outputFile  = "img/" + chosenImage.slice(spliceIndex, chosenImage.length);
+
+                    return _returnDefault(res, true, outputFile);
+
+                    // return _returnDefault(res, false);
                 }
 
                 console.log("Found documents!");
